@@ -70,10 +70,12 @@ func EqualWithin(actual, expected interface{}, ε interface{}, t *testing.T) {
 	switch kind {
 	case reflect.Float64:
 		actual, expected, ε := actual.([]float64), expected.([]float64), ε.(float64)
+		max := 0.0
 		for i := range actual {
-			if Δ := math.Abs(actual[i] - expected[i]); Δ > ε {
-				raise(t, "got %v instead of %v (delta %v)", actual[i], expected[i], Δ)
-			}
+			max = math.Max(max, math.Abs(actual[i]-expected[i]))
+		}
+		if max > ε {
+			raise(t, "got distance %v instead of %v", max, ε)
 		}
 	default:
 		panic("the type is not supported")
