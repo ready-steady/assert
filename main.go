@@ -1,5 +1,4 @@
-// Package assert provides a number of functions for making assertions in
-// tests.
+// Package assert provides functions for making assertions in tests.
 package assert
 
 import (
