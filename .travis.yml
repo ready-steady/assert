@@ -1,7 +1,5 @@
 language: go
-
-install: go get -t ./...
+sudo: false
 
 notifications:
-  email:
-    on_success: never
+  email: false
