@@ -34,9 +34,14 @@ func Equal(actual, expected interface{}, t *testing.T) {
 	}
 }
 
-// EqualWithin asserts that the distance between two scalars or the uniform
-// distance between two vectors is less than the given value.
+// EqualWithin is an alias for Close. It is deprecated.
 func EqualWithin(actual, expected interface{}, ε interface{}, t *testing.T) {
+	Close(actual, expected, ε, t)
+}
+
+// Close asserts that the distance between two scalars or the uniform distance
+// between two vectors is less than the given value.
+func Close(actual, expected interface{}, ε interface{}, t *testing.T) {
 	typo := reflect.TypeOf(actual)
 	if typo != reflect.TypeOf(expected) {
 		raise(t, "got %v instead of %v", actual, expected)
