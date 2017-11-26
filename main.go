@@ -81,11 +81,6 @@ func Equal(actual, expected interface{}, t *testing.T) {
 	}
 }
 
-// EqualWithin is an alias for Close. It is deprecated.
-func EqualWithin(actual, expected interface{}, ε interface{}, t *testing.T) {
-	Close(actual, expected, ε, t)
-}
-
 // Success asserts that the error is not nil.
 func Failure(err error, t *testing.T) {
 	if err == nil {
