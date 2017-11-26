@@ -8,37 +8,6 @@ import (
 	"testing"
 )
 
-// Equal asserts that two objects are equal.
-func Equal(actual, expected interface{}, t *testing.T) {
-	atype, etype := reflect.TypeOf(actual), reflect.TypeOf(expected)
-	if atype == nil && etype == nil {
-		return
-	} else if (atype == nil) != (etype == nil) {
-		raise(t, "got %T instead of %T", actual, expected)
-	}
-
-	kind := atype.Kind()
-	if kind != etype.Kind() {
-		raise(t, "got %T instead of %T", actual, expected)
-	}
-
-	switch kind {
-	case reflect.Slice, reflect.Struct, reflect.Ptr:
-		if !reflect.DeepEqual(actual, expected) {
-			raise(t, "got %v instead of %v", actual, expected)
-		}
-	default:
-		if actual != expected {
-			raise(t, "got %v instead of %v", actual, expected)
-		}
-	}
-}
-
-// EqualWithin is an alias for Close. It is deprecated.
-func EqualWithin(actual, expected interface{}, ε interface{}, t *testing.T) {
-	Close(actual, expected, ε, t)
-}
-
 // Close asserts that the distance between two scalars or the uniform distance
 // between two vectors is less than the given value.
 func Close(actual, expected interface{}, ε interface{}, t *testing.T) {
@@ -86,17 +55,48 @@ func Close(actual, expected interface{}, ε interface{}, t *testing.T) {
 	}
 }
 
-// Success asserts that the error is nil.
-func Success(err error, t *testing.T) {
-	if err != nil {
-		raise(t, "got an error '%v'", err)
+// Equal asserts that two objects are equal.
+func Equal(actual, expected interface{}, t *testing.T) {
+	atype, etype := reflect.TypeOf(actual), reflect.TypeOf(expected)
+	if atype == nil && etype == nil {
+		return
+	} else if (atype == nil) != (etype == nil) {
+		raise(t, "got %T instead of %T", actual, expected)
 	}
+
+	kind := atype.Kind()
+	if kind != etype.Kind() {
+		raise(t, "got %T instead of %T", actual, expected)
+	}
+
+	switch kind {
+	case reflect.Slice, reflect.Struct, reflect.Ptr:
+		if !reflect.DeepEqual(actual, expected) {
+			raise(t, "got %v instead of %v", actual, expected)
+		}
+	default:
+		if actual != expected {
+			raise(t, "got %v instead of %v", actual, expected)
+		}
+	}
+}
+
+// EqualWithin is an alias for Close. It is deprecated.
+func EqualWithin(actual, expected interface{}, ε interface{}, t *testing.T) {
+	Close(actual, expected, ε, t)
 }
 
 // Success asserts that the error is not nil.
 func Failure(err error, t *testing.T) {
 	if err == nil {
 		raise(t, "expected an error")
+	}
+}
+
+// Success asserts that the error is nil.
+func Success(err error, t *testing.T) {
+	if err != nil {
+		raise(t, "got an error '%v'", err)
 	}
 }
 
